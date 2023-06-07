@@ -1,6 +1,6 @@
-local map = vim.api.nvim_set_keymap
+local map = vim.keymap.set
 
-opts = { noremap = true, silent = true }
+local opts = { noremap = true, silent = true }
 
 -- Editing
 map('i', 'jj', '<ESC>', opts)
@@ -15,20 +15,33 @@ map('n', '<Leader>gs', '<cmd>Telescope git_status<cr>', opts)
 map('n', '<Leader>gc', '<cmd>Telescope git_commits<cr>', opts)
 map('n', '<Leader>gb', '<cmd>Telescope git_branches<cr>', opts)
 
--- LSP
-lsp_on_attach = function(client, bufnr)
+-- Use LspAttach autocommand to only map the following keys
+-- after the language server attaches to the current buffer
+vim.api.nvim_create_autocmd('LspAttach', {
+  group = vim.api.nvim_create_augroup('UserLspConfig', {}),
+  callback = function(ev)
     -- Enable completion triggered by <c-x><c-o>
-    vim.api.nvim_buf_set_option(bufnr, 'omnifunc', 'v:lua.vim.lsp.omnifunc')
+    vim.bo[ev.buf].omnifunc = 'v:lua.vim.lsp.omnifunc'
 
-    -- Mappings
+    -- Buffer local mappings.
     -- See `:help vim.lsp.*` for documentation on any of the below functions
-    local bufopts = { noremap = true, silent = true, buffer = bufnr }
-    map('n', 'gD', vim.lsp.buf.declaration, bufopts)
-    map('n', 'gd', vim.lsp.buf.definition, bufopts)
-    map('n', 'K', vim.lsp.buf.hover, bufopts)
-    map('n', 'gi', vim.lsp.buf.implementation, bufopts)
-    map('n', '<C-k>', vim.lsp.buf.signature_help, bufopts)
-    map('n', '<space>rn', vim.lsp.buf.rename, bufopts)
-    map('n', '<space>ca', vim.lsp.buf.code_action, bufopts)
-    map('n', 'gr', vim.lsp.buf.references, bufopts)
-end
+    local opts = { buffer = ev.buf }
+    map('n', 'gD', vim.lsp.buf.declaration, opts)
+    map('n', 'gd', vim.lsp.buf.definition, opts)
+    map('n', 'K', vim.lsp.buf.hover, opts)
+    map('n', 'gi', vim.lsp.buf.implementation, opts)
+    map('n', '<C-k>', vim.lsp.buf.signature_help, opts)
+    map('n', '<space>wa', vim.lsp.buf.add_workspace_folder, opts)
+    map('n', '<space>wr', vim.lsp.buf.remove_workspace_folder, opts)
+    map('n', '<space>wl', function()
+      print(vim.inspect(vim.lsp.buf.list_workspace_folders()))
+    end, opts)
+    map('n', '<space>D', vim.lsp.buf.type_definition, opts)
+    map('n', '<space>rn', vim.lsp.buf.rename, opts)
+    map({ 'n', 'v' }, '<space>ca', vim.lsp.buf.code_action, opts)
+    map('n', 'gr', vim.lsp.buf.references, opts)
+    map('n', '<space>f', function()
+      vim.lsp.buf.format { async = true }
+    end, opts)
+  end,
+})
