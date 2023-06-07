@@ -6,6 +6,9 @@ local opts = { noremap = true, silent = true }
 map('i', 'jj', '<ESC>', opts)
 map('i', '{<CR>', '{<CR>}<ESC>O', opts)
 
+-- Meta
+map('n', '<CR>', ':noh<CR><CR>', opts)
+
 -- Telescope
 map('n', '<C-f>', '<cmd>Telescope find_files<cr>', opts)
 map('n', '<Leader>f', '<cmd>Telescope live_grep<cr>', opts)
