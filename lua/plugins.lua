@@ -9,4 +9,8 @@ return require('packer').startup(function()
     use 'morhetz/gruvbox'
     use 'neovim/nvim-lspconfig'
     use 'nvim-tree/nvim-tree.lua'
+    use {
+        'nvim-treesitter/nvim-treesitter',
+        run = ':TSUpdate'
+    }
 end)
