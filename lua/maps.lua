@@ -6,9 +6,6 @@ local opts = { noremap = true, silent = true }
 map('i', 'jj', '<ESC>', opts)
 map('i', '{<CR>', '{<CR>}<ESC>O', opts)
 
--- Meta
-map('n', '<CR>', ':noh<CR><CR>', opts)
-
 -- Telescope
 map('n', '<C-f>', '<cmd>Telescope find_files<cr>', opts)
 map('n', '<Leader>f', '<cmd>Telescope live_grep<cr>', opts)
@@ -17,6 +14,10 @@ map('n', '<Leader>fh', '<cmd>Telescope help_tags<cr>', opts)
 map('n', '<Leader>gs', '<cmd>Telescope git_status<cr>', opts)
 map('n', '<Leader>gc', '<cmd>Telescope git_commits<cr>', opts)
 map('n', '<Leader>gb', '<cmd>Telescope git_branches<cr>', opts)
+
+-- nvim-tree
+local tree = require("nvim-tree.api").tree
+map('n', '<C-b>', tree.focus, opts)
 
 -- Use LspAttach autocommand to only map the following keys
 -- after the language server attaches to the current buffer
