@@ -6,7 +6,7 @@ return require('packer').startup(function()
 	requires = { {'nvim-lua/plenary.nvim'} }
     }
     use 'vim-airline/vim-airline'
-    use 'morhetz/gruvbox'
+    use 'ribru17/bamboo.nvim'
     use 'neovim/nvim-lspconfig'
     use 'nvim-tree/nvim-tree.lua'
     use {
