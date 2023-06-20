@@ -1,12 +1,12 @@
 local opts = { noremap = true, silent = true }
 
 -- Editing
-vim.keymap.set('i', 'jj', '<ESC>', opts)
-vim.keymap.set('i', '{<CR>', '{<CR>}<ESC>O', opts)
+vim.keymap.set('i', 'jj', '<ESC>', { silent = true, desc = "Return to normal mode" })
+vim.keymap.set('i', '{<CR>', '{<CR>}<ESC>O', { silent = true, desc = "Emit closing brace" })
 
 -- Terminal
-function toggle_terminal()
-    for i, buffer in ipairs(vim.api.nvim_list_bufs()) do
+local function toggle_terminal()
+    for _, buffer in ipairs(vim.api.nvim_list_bufs()) do
         local buffer_name = vim.api.nvim_buf_get_name(buffer)
         if (string.sub(buffer_name, 1, 7) == "term://") then
             vim.api.nvim_win_set_buf(0, buffer)
